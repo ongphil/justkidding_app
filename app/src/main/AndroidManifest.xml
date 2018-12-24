@@ -29,7 +29,9 @@
             android:label="@string/title_activity_main"></activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar.Fullscreen"></activity>
     </application>
 
 </manifest>
