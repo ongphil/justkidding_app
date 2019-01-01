@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.mainFragment, appetencesFragment).commitNow();
+        getSupportFragmentManager().beginTransaction().add(R.id.mainFragment, appetencesFragment).commit();
         currentFragmentIndex = fragmentType.APPETENCES_FRAGMENT;
         setTitle("Appétences");
     }
@@ -54,22 +55,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_appetences:
                     if(!currentFragmentIndex.equals(fragmentType.APPETENCES_FRAGMENT))
                     {
-                        switch(currentFragmentIndex)
-                        {
-                            case HISTORY_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(historyFragment).commitNow();
-                                break;
-                            case ADVICES_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(advicesFragment).commitNow();
-
-                                break;
-                            case PROFILE_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(profileFragment).commitNow();
-                                break;
-                            default:
-                                break;
-                        }
-                        getSupportFragmentManager().beginTransaction().add(R.id.mainFragment, appetencesFragment).commitNow();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, appetencesFragment).commit();
                         currentFragmentIndex = fragmentType.APPETENCES_FRAGMENT;
                         setTitle("Appétences");
                     }
@@ -77,21 +63,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_history:
                     if(!currentFragmentIndex.equals(fragmentType.HISTORY_FRAGMENT))
                     {
-                        switch(currentFragmentIndex)
-                        {
-                            case APPETENCES_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(appetencesFragment).commitNow();
-                                break;
-                            case ADVICES_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(advicesFragment).commitNow();
-                                break;
-                            case PROFILE_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(profileFragment).commitNow();
-                                break;
-                            default:
-                                break;
-                        }
-                        getSupportFragmentManager().beginTransaction().add(R.id.mainFragment, historyFragment).commitNow();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, historyFragment).commit();
                         currentFragmentIndex = fragmentType.HISTORY_FRAGMENT;
                         setTitle("Parcours");
                     }
@@ -100,21 +72,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_advices:
                     if(!currentFragmentIndex.equals(fragmentType.ADVICES_FRAGMENT))
                     {
-                        switch(currentFragmentIndex)
-                        {
-                            case APPETENCES_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(appetencesFragment).commitNow();
-                                break;
-                            case HISTORY_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(historyFragment).commitNow();
-                                break;
-                            case PROFILE_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(profileFragment).commitNow();
-                                break;
-                            default:
-                                break;
-                        }
-                        getSupportFragmentManager().beginTransaction().add(R.id.mainFragment, advicesFragment).commitNow();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, advicesFragment).commit();
                         currentFragmentIndex = fragmentType.ADVICES_FRAGMENT;
                         setTitle("Conseils");
                     }
@@ -122,21 +80,7 @@ public class MainActivity extends AppCompatActivity
                 case R.id.navigation_profile:
                     if(!currentFragmentIndex.equals(fragmentType.PROFILE_FRAGMENT))
                     {
-                        switch(currentFragmentIndex)
-                        {
-                            case APPETENCES_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(appetencesFragment).commitNow();
-                                break;
-                            case HISTORY_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(historyFragment).commitNow();
-                                break;
-                            case ADVICES_FRAGMENT:
-                                getSupportFragmentManager().beginTransaction().remove(advicesFragment).commitNow();
-                                break;
-                            default:
-                                break;
-                        }
-                        getSupportFragmentManager().beginTransaction().add(R.id.mainFragment, profileFragment).commitNow();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, profileFragment).commit();
                         currentFragmentIndex = fragmentType.PROFILE_FRAGMENT;
                         setTitle("Profil");
                     }
