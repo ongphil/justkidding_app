@@ -4,28 +4,25 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity
-        implements AppetencesFragment.OnFragmentInteractionListener, HistoryFragment.OnFragmentInteractionListener,
+        implements ViewPager.OnPageChangeListener,
+        AppetencesFragment.OnFragmentInteractionListener, HistoryFragment.OnFragmentInteractionListener,
         AdvicesFragment.OnFragmentInteractionListener, ProfileFragment.OnFragmentInteractionListener {
+
+    private ViewPager viewPager;
+    private BottomNavigationView navigation;
 
     private AppetencesFragment appetencesFragment;
     private HistoryFragment historyFragment;
     private AdvicesFragment advicesFragment;
     private ProfileFragment profileFragment;
-
-    public enum fragmentType {
-        APPETENCES_FRAGMENT,
-        HISTORY_FRAGMENT,
-        ADVICES_FRAGMENT,
-        PROFILE_FRAGMENT;
-    }
-
-    public fragmentType currentFragmentIndex;
 
 
     @Override
@@ -33,16 +30,40 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        viewPager = (ViewPager)findViewById(R.id.viewPager);
+        viewPager.setOffscreenPageLimit(4);
+        viewPager.addOnPageChangeListener(this);
+
         appetencesFragment = new AppetencesFragment();
         historyFragment = new HistoryFragment();
         advicesFragment = new AdvicesFragment();
         profileFragment = new ProfileFragment();
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView)findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.mainFragment, appetencesFragment).commit();
-        currentFragmentIndex = fragmentType.APPETENCES_FRAGMENT;
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return appetencesFragment;
+                    case 1:
+                        return historyFragment;
+                    case 2:
+                        return advicesFragment;
+                    case 3:
+                        return profileFragment;
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 4;
+            }
+        });
+
         setTitle("Appétences");
     }
 
@@ -53,37 +74,20 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_appetences:
-                    if(!currentFragmentIndex.equals(fragmentType.APPETENCES_FRAGMENT))
-                    {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, appetencesFragment).commit();
-                        currentFragmentIndex = fragmentType.APPETENCES_FRAGMENT;
-                        setTitle("Appétences");
-                    }
+                    viewPager.setCurrentItem(0);
+                    setTitle("Appétences");
                     return true;
                 case R.id.navigation_history:
-                    if(!currentFragmentIndex.equals(fragmentType.HISTORY_FRAGMENT))
-                    {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, historyFragment).commit();
-                        currentFragmentIndex = fragmentType.HISTORY_FRAGMENT;
-                        setTitle("Parcours");
-                    }
-
+                    viewPager.setCurrentItem(1);
+                    setTitle("Parcours");
                     return true;
                 case R.id.navigation_advices:
-                    if(!currentFragmentIndex.equals(fragmentType.ADVICES_FRAGMENT))
-                    {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, advicesFragment).commit();
-                        currentFragmentIndex = fragmentType.ADVICES_FRAGMENT;
-                        setTitle("Conseils");
-                    }
+                    viewPager.setCurrentItem(2);
+                    setTitle("Conseils");
                     return true;
                 case R.id.navigation_profile:
-                    if(!currentFragmentIndex.equals(fragmentType.PROFILE_FRAGMENT))
-                    {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, profileFragment).commit();
-                        currentFragmentIndex = fragmentType.PROFILE_FRAGMENT;
-                        setTitle("Profil");
-                    }
+                    viewPager.setCurrentItem(3);
+                    setTitle("Profil");
                     return true;
             }
             return false;
@@ -104,6 +108,35 @@ public class MainActivity extends AppCompatActivity
     }
     @Override
     public void onFragmentInteractionProfile(Uri uri) {
+
+    }
+
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        switch (position) {
+            case 0:
+                setTitle("Appétences");
+                break;
+            case 1:
+                setTitle("Parcours");
+                break;
+            case 2:
+                setTitle("Conseils");
+                break;
+            case 3:
+                setTitle("Profil");
+                break;
+        }
+        navigation.getMenu().getItem(position).setChecked(true);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
 
     }
 
