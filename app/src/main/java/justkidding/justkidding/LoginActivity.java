@@ -26,6 +26,9 @@ import static android.content.ContentValues.TAG;
 public class LoginActivity extends Activity {
 
     Button buttonConnection;
+    String email ;
+    String child_name;
+    int child_age;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +45,7 @@ public class LoginActivity extends Activity {
                 try {
                     /// Connexion à la BDD pour trouver l'utilisateur
                     String result = "success";
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("Users")
-                            .document("ug5CDvhnTf29prJutrVx")
-                            .get()
-                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    String email = documentSnapshot.getString("Email");
-                                    String password = documentSnapshot.getString("Password");
-                                    String child_name = documentSnapshot.getString("Child_name");
-                                    int child_age = documentSnapshot.getLong("Child_age").intValue();
-                                    Map<String, Object> activity = (Map<String, Object>) documentSnapshot.get("Activity");
-                                }
-                            });
+
                     return result;
                 } catch (Exception e) {
                     return null;
