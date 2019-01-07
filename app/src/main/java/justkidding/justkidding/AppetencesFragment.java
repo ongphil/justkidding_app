@@ -40,6 +40,7 @@ public class AppetencesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 test_tv.setText("Test");
+                mListener.onFragmentInteractionAppetences();
             }
         });
         return view;
@@ -75,6 +76,6 @@ public class AppetencesFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteractionAppetences(Uri uri);
+        void onFragmentInteractionAppetences();
     }
 }

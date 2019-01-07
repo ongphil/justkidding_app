@@ -1,5 +1,6 @@
 package justkidding.justkidding;
 
+import android.app.ActionBar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity
     };
 
     @Override
-    public void onFragmentInteractionAppetences(Uri uri) {
+    public void onFragmentInteractionAppetences() {
 
     }
     @Override
