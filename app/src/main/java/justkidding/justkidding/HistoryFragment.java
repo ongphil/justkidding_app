@@ -1,12 +1,26 @@
 package justkidding.justkidding;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -58,6 +72,7 @@ public class HistoryFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        logIn();
     }
 
     @Override
@@ -104,5 +119,39 @@ public class HistoryFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteractionHistory(Uri uri);
+    }
+
+    public void logIn() {
+        class LogIn extends AsyncTask<Void, Void, String> {
+
+            @Override
+            protected String doInBackground(Void... voids) {
+                try {
+                    /// Connexion à la BDD pour trouver l'utilisateur
+                    String result = "success";
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("Histories")
+                            .document("KGOlFDOVOo2xpbhOCOf1")
+                            .get()
+                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    String user_id = documentSnapshot.getString("User_ID");
+                                    List<Map<String, Object>> activities = (List<Map<String, Object>>) documentSnapshot.get("Activities");
+                                    Log.d("test", "Log test : " + activities);
+                                    Map<String, Object> test = (activities.get(0));
+                                    String test3 = (String) test.get("Activity_Name");
+                                    String test2 = "";
+                                }
+                            });
+                    return result;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+
+        }
+        LogIn logIn = new LogIn();
+        logIn.execute();
     }
 }
