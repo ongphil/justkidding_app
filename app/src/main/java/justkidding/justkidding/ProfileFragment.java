@@ -39,8 +39,6 @@ public class ProfileFragment extends Fragment {
     private String Email;
     private String Child_Name;
     private int Child_Age;
-    private String activity_histoire;
-    private String activity_comptine;
     private TextView EmailTextView;
     private TextView NameTextView;
     private TextView AgeTextView;

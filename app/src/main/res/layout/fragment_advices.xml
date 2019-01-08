@@ -6,9 +6,9 @@
     tools:context=".AdvicesFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fragment des conseils" />
 
-</FrameLayout>
+    <ListView
+         android:id="@+id/ListViewNotif"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent" />
+ </FrameLayout>
