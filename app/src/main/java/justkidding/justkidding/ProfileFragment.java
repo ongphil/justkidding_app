@@ -1,12 +1,25 @@
 package justkidding.justkidding;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 
 /**
@@ -22,6 +35,20 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private String Email;
+    private String Child_Name;
+    private int Child_Age;
+    private String activity_histoire;
+    private String activity_comptine;
+    private TextView EmailTextView;
+    private TextView NameTextView;
+    private TextView AgeTextView;
+    private Button comptine;
+    private Button histoire;
+
+    private FirebaseAuth Auth;
+    private FirebaseFirestore Firestore;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,13 +85,68 @@ public class ProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        Auth= FirebaseAuth.getInstance();
+        Firestore = FirebaseFirestore.getInstance();
+
+        EmailTextView = view.findViewById(R.id.editTextEmail);
+        NameTextView = view.findViewById(R.id.editTextChildName);
+        AgeTextView = view.findViewById(R.id.editTextChildAge);
+        histoire = view.findViewById(R.id.buttonHistoire);
+        comptine = view.findViewById(R.id.buttonComptine);
+
+        Firestore.collection("Users")
+                .document("ug5CDvhnTf29prJutrVx")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Email = documentSnapshot.getString("Email");
+                        Child_Name = documentSnapshot.getString("Child_name");
+                        Child_Age = documentSnapshot.getLong("Child_age").intValue();
+                        Map<String, Boolean> activity = (Map<String, Boolean>) documentSnapshot.get("Activity");
+                        EmailTextView.setText(Email);
+                        NameTextView.setText(Child_Name);
+                        AgeTextView.setText("" + Child_Age);
+                        for ( Map.Entry<String, Boolean> entry : activity.entrySet()) {
+                            String key = entry.getKey();
+                            Boolean value = entry.getValue();
+                            // do something with key and/or tab
+                            switch (key) {
+                                case "Comptine":
+                                    if (value)
+                                    {
+                                        Drawable roundDrawable = getResources().getDrawable(R.drawable.circle);
+                                        roundDrawable.setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+
+                                            comptine.setBackground(roundDrawable);
+                                    }
+                                    break;
+                                case "Histoire":
+                                    if (value)
+                                    {
+                                        Drawable roundDrawable = getResources().getDrawable(R.drawable.circle);
+                                        roundDrawable.setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
+
+                                            histoire.setBackground(roundDrawable);
+                                    }
+                                    break;
+                            }
+
+                        }
+                    }
+                });
+
+        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

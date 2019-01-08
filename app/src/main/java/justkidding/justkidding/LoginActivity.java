@@ -13,6 +13,9 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
 
     Button buttonConnection;
+    String email ;
+    String child_name;
+    int child_age;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
