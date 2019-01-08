@@ -26,6 +26,7 @@ import static android.content.ContentValues.TAG;
 public class LoginActivity extends Activity {
 
     Button buttonConnection;
+    Button Inscription;
     String email ;
     String child_name;
     int child_age;
@@ -35,6 +36,14 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         buttonConnection = (Button)findViewById(R.id.buttonConnection);
+        Inscription = (Button)findViewById(R.id.buttonSignup);
+        Inscription.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Intent signupactivity = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(signupactivity);
+            }
+        });
+
     }
 
     public void logIn(View view) {
