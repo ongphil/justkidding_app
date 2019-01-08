@@ -112,44 +112,36 @@ public class ProfileFragment extends Fragment {
                         Email = documentSnapshot.getString("Email");
                         Child_Name = documentSnapshot.getString("Child_name");
                         Child_Age = documentSnapshot.getLong("Child_age").intValue();
-                        Map<String, String> activity = (Map<String, String>) documentSnapshot.get("Activity");
+                        Map<String, Boolean> activity = (Map<String, Boolean>) documentSnapshot.get("Activity");
                         EmailTextView.setText(Email);
                         NameTextView.setText(Child_Name);
                         AgeTextView.setText("" + Child_Age);
-                      /*  for ( Map.Entry<String, String> entry : activity.entrySet()) {
+                        for ( Map.Entry<String, Boolean> entry : activity.entrySet()) {
                             String key = entry.getKey();
-                            String value = entry.getValue();
+                            Boolean value = entry.getValue();
                             // do something with key and/or tab
                             switch (key) {
                                 case "Comptine":
-                                    if (value == "true")
+                                    if (value)
                                     {
                                         Drawable roundDrawable = getResources().getDrawable(R.drawable.circle);
-                                        roundDrawable.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
+                                        roundDrawable.setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
 
-                                        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                                            comptine.setBackgroundDrawable(roundDrawable);
-                                        } else {
                                             comptine.setBackground(roundDrawable);
-                                        }
                                     }
                                     break;
                                 case "Histoire":
-                                    if (value == "true")
+                                    if (value)
                                     {
                                         Drawable roundDrawable = getResources().getDrawable(R.drawable.circle);
-                                        roundDrawable.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_ATOP);
+                                        roundDrawable.setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
 
-                                        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                                            histoire.setBackgroundDrawable(roundDrawable);
-                                        } else {
                                             histoire.setBackground(roundDrawable);
-                                        }
                                     }
                                     break;
                             }
 
-                        }*/
+                        }
                     }
                 });
 

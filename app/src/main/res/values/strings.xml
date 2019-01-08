@@ -2,6 +2,6 @@
     <string name="app_name">Justkidding</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="Deconnexion">Deconnexion</string>
+    <string name="Deconnexion">Log Out</string>
 
 </resources>
