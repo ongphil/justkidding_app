@@ -7,16 +7,27 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +53,9 @@ public class HistoryFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    boolean first_activity = true;
+    boolean icon_left = true;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -72,15 +86,97 @@ public class HistoryFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        logIn();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history, container, false);
+        final View view = inflater.inflate(R.layout.fragment_history, container, false);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Histories")
+                .document("KGOlFDOVOo2xpbhOCOf1")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String user_id = documentSnapshot.getString("User_ID");
+                        List<Map<String, Object>> activities = (List<Map<String, Object>>) documentSnapshot.get("Activities");
+
+                        for(Map<String, Object> activity : activities)
+                        {
+                            ViewGroup insertLayout_main = (ViewGroup) view.findViewById(R.id.linearlayout_main);
+                            /// 1ère vue (icone de l'activité + date + heure)
+                            LayoutInflater layoutInflater_activity_icon = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            View activity_icon_view = layoutInflater_activity_icon.inflate(R.layout.history_custom_layout, null);
+
+                            RelativeLayout relativeLayout_Icon = (RelativeLayout) activity_icon_view.findViewById(R.id.relativelayout_Icon);
+                            ImageView imageView_Icon = (ImageView) activity_icon_view.findViewById(R.id.activity_icon);
+                            TextView textView_Date = (TextView) activity_icon_view.findViewById(R.id.tv_activity_date);
+                            TextView textView_Hour = (TextView) activity_icon_view.findViewById(R.id.tv_activity_hour);
+
+                            String activity_date_str = String.valueOf(activity.get("Activity_Date"));
+                            String formatted_date = "";
+                            String formatted_hour = "";
+                            try {
+                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                                SimpleDateFormat formatter_date = new SimpleDateFormat("yyyy-MM-dd");
+                                SimpleDateFormat formatter_hour = new SimpleDateFormat("HH:mm");
+                                Date date = formatter.parse(activity_date_str);
+                                formatted_date = formatter_date.format(date);
+                                formatted_hour = formatter_hour.format(date);
+                                textView_Date.setText(formatted_date);
+                                textView_Hour.setText(formatted_hour);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            if(String.valueOf(activity.get("Activity_Name")).equals("Histoire"))
+                            {
+                                imageView_Icon.setImageResource(R.drawable.red_circle_histoire);
+                            }
+                            else
+                            {
+                                imageView_Icon.setImageResource(R.drawable.red_circle_comptine);
+                            }
+
+
+                            // Si ce n'est pas la première activité, on ajoute un trait de transition
+                            if(!first_activity)
+                            {
+                                /// 2ème vue (trait de transition entre 2 activités)
+                                LayoutInflater layoutInflater_link = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                View link_view = layoutInflater_link.inflate(R.layout.history_custom_link, null);
+
+                                ImageView imageView_link = (ImageView) link_view.findViewById(R.id.imageView_link);
+
+                                if(icon_left)
+                                {
+                                    imageView_link.setImageResource(R.drawable.line_left_to_right);
+                                }
+                                else {
+                                    relativeLayout_Icon.setGravity(Gravity.END);
+                                    imageView_link.setImageResource(R.drawable.line_right_to_left);
+                                }
+                                insertLayout_main.addView(link_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                            }
+                            else
+                            {
+                                first_activity = false;
+                            }
+
+                            icon_left = !icon_left;
+
+                            insertLayout_main.addView(activity_icon_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                        }
+                    }
+                });
+
+        return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -121,37 +217,50 @@ public class HistoryFragment extends Fragment {
         void onFragmentInteractionHistory(Uri uri);
     }
 
-    public void logIn() {
-        class LogIn extends AsyncTask<Void, Void, String> {
+    public void populate_history(View view) {
 
-            @Override
-            protected String doInBackground(Void... voids) {
-                try {
-                    /// Connexion à la BDD pour trouver l'utilisateur
-                    String result = "success";
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("Histories")
-                            .document("KGOlFDOVOo2xpbhOCOf1")
-                            .get()
-                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    String user_id = documentSnapshot.getString("User_ID");
-                                    List<Map<String, Object>> activities = (List<Map<String, Object>>) documentSnapshot.get("Activities");
-                                    Log.d("test", "Log test : " + activities);
-                                    Map<String, Object> test = (activities.get(0));
-                                    String test3 = (String) test.get("Activity_Name");
-                                    String test2 = "";
-                                }
-                            });
-                    return result;
-                } catch (Exception e) {
-                    return null;
-                }
+        ViewGroup insertLayoutMain = (ViewGroup) view.findViewById(R.id.linearlayout_main);
+
+        /// 1ère vue (icone de l'activité + date + heure)
+        LayoutInflater layoutInflater_activity_icon = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View activity_icon_view = layoutInflater_activity_icon.inflate(R.layout.history_custom_layout, null);
+
+        RelativeLayout relativeLayout_Icon = (RelativeLayout) activity_icon_view.findViewById(R.id.relativelayout_Icon);
+        ImageView imageView_Icon = (ImageView) activity_icon_view.findViewById(R.id.activity_icon);
+        TextView textView_Date = (TextView) activity_icon_view.findViewById(R.id.tv_activity_date);
+        TextView textView_Hour = (TextView) activity_icon_view.findViewById(R.id.tv_activity_hour);
+
+        textView_Date.setText("08/01/2019");
+        textView_Hour.setText("12:26");
+        imageView_Icon.setImageResource(R.drawable.red_circle_histoire);
+
+        // Si ce n'est pas la première activité, on ajoute un trait de transition
+        if(!first_activity)
+        {
+            /// 2ème vue (trait de transition entre 2 activités)
+            LayoutInflater layoutInflater_link = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View link_view = layoutInflater_link.inflate(R.layout.history_custom_link, null);
+
+            ImageView imageView_link = (ImageView) link_view.findViewById(R.id.imageView_link);
+
+            if(icon_left)
+            {
+                imageView_link.setImageResource(R.drawable.line_left_to_right);
             }
-
+            else {
+                relativeLayout_Icon.setGravity(Gravity.END);
+                imageView_link.setImageResource(R.drawable.line_right_to_left);
+            }
+            insertLayoutMain.addView(link_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
-        LogIn logIn = new LogIn();
-        logIn.execute();
+        else
+        {
+            first_activity = false;
+        }
+
+        icon_left = !icon_left;
+
+        insertLayoutMain.addView(activity_icon_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
     }
 }

@@ -6,9 +6,10 @@
     tools:context=".HistoryFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
+        android:id="@+id/linearlayout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Fragment de l'historique" />
-
+        android:orientation="vertical"></LinearLayout>
 </FrameLayout>
