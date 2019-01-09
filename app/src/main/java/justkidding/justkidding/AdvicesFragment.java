@@ -3,10 +3,28 @@ package justkidding.justkidding;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -26,6 +44,11 @@ public class AdvicesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private String activite;
+    private FirebaseAuth Auth;
+    private FirebaseFirestore Firestore;
+    ArrayList<String> text = new ArrayList<>();
 
     private OnFragmentInteractionListener mListener;
 
@@ -63,8 +86,51 @@ public class AdvicesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_advices, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_advices, container, false);
+
+        Auth= FirebaseAuth.getInstance();
+        Firestore = FirebaseFirestore.getInstance();
+
+        final ListView NotificationActivities = (ListView) view.findViewById(R.id.ListViewNotif);
+
+        Firestore.collection("NotificationPush")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot snapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w("TAG", "listen:error", e);
+                            return;
+                        }
+
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            switch (dc.getType()) {
+                                case ADDED:
+                                    Log.d("TAG", "New Msg: " + dc.getDocument().getString("ActivityProposed"));
+                                    text.add(dc.getDocument().getString("ActivityProposed"));
+                                    break;
+                                case MODIFIED:
+                                    Log.d("TAG", "Modified Msg: " + dc.getDocument().getString("ActivityProposed"));
+                                    text.add(dc.getDocument().getString("ActivityProposed"));
+                                    break;
+                            }
+                        }
+                        ArrayAdapter<String> ListViewAdapter = new ArrayAdapter<String>(
+                                getActivity(),
+                                R.layout.layout_image_text,
+                                R.id.ItemNotification,
+                                text
+                        );
+                        NotificationActivities.setAdapter(ListViewAdapter);
+
+                    }
+                });
+
+
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

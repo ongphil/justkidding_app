@@ -1,6 +1,7 @@
 package justkidding.justkidding;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -38,14 +39,15 @@ public class ProfileFragment extends Fragment {
 
     private String Email;
     private String Child_Name;
+    private String Jouet_ID;
     private int Child_Age;
-    private String activity_histoire;
-    private String activity_comptine;
     private TextView EmailTextView;
     private TextView NameTextView;
     private TextView AgeTextView;
+    private TextView JouetTextView;
     private Button comptine;
     private Button histoire;
+    private Button LogOut;
 
     private FirebaseAuth Auth;
     private FirebaseFirestore Firestore;
@@ -89,7 +91,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -100,9 +102,10 @@ public class ProfileFragment extends Fragment {
         EmailTextView = view.findViewById(R.id.editTextEmail);
         NameTextView = view.findViewById(R.id.editTextChildName);
         AgeTextView = view.findViewById(R.id.editTextChildAge);
+        JouetTextView = view.findViewById(R.id.editTextJouetID);
         histoire = view.findViewById(R.id.buttonHistoire);
         comptine = view.findViewById(R.id.buttonComptine);
-
+        LogOut = view.findViewById(R.id.Button_Logout);
         Firestore.collection("Users")
                 .document("ug5CDvhnTf29prJutrVx")
                 .get()
@@ -112,10 +115,12 @@ public class ProfileFragment extends Fragment {
                         Email = documentSnapshot.getString("Email");
                         Child_Name = documentSnapshot.getString("Child_name");
                         Child_Age = documentSnapshot.getLong("Child_age").intValue();
+                        Jouet_ID = documentSnapshot.getString("Jouet_ID");
                         Map<String, Boolean> activity = (Map<String, Boolean>) documentSnapshot.get("Activity");
                         EmailTextView.setText(Email);
                         NameTextView.setText(Child_Name);
                         AgeTextView.setText("" + Child_Age);
+                        JouetTextView.setText(Jouet_ID);
                         for ( Map.Entry<String, Boolean> entry : activity.entrySet()) {
                             String key = entry.getKey();
                             Boolean value = entry.getValue();
@@ -144,6 +149,16 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                 });
+
+        LogOut.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Auth.signOut();
+
+                Intent login = new Intent(container.getContext(), LoginActivity.class);
+                startActivity(login);
+
+            }
+            });
 
         return view;
 
