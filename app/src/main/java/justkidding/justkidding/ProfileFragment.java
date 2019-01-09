@@ -107,7 +107,7 @@ public class ProfileFragment extends Fragment {
         comptine = view.findViewById(R.id.buttonComptine);
         LogOut = view.findViewById(R.id.Button_Logout);
         Firestore.collection("Users")
-                .document("ug5CDvhnTf29prJutrVx")
+                .document("Kg2AkIU0fkMF73kR0BmDyh95s2G2")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
