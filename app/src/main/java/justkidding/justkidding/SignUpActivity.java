@@ -99,14 +99,14 @@ public class SignUpActivity extends AppCompatActivity {
 
         SignUp.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
+                try{
                 email = Email_Add.getText().toString();
                 password = PassWord.getText().toString();
                 child_name = Child_name.getText().toString();
-                child_age = Integer. parseInt(Child_age.getText().toString());
+                child_age = Integer.parseInt(Child_age.getText().toString());
                 jouet_id = Jouet_ID.getText().toString();
 
-                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(child_name) && !TextUtils.isEmpty(Child_age.getText().toString()))
-                {
+                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(child_name) && !TextUtils.isEmpty(Child_age.getText().toString())) {
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -121,7 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 user.put("Jouet_ID", jouet_id);
                                 Map<String, Boolean> activities = new HashMap<>();
                                 activities.put("Comptine", pressedC);
-                                activities.put ("Histoire", pressedH);
+                                activities.put("Histoire", pressedH);
                                 user.put("Activity", activities);
                                 Firestore.collection("Users").document(user_id).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -148,6 +148,11 @@ public class SignUpActivity extends AppCompatActivity {
                 }
 
             }
+                catch(NumberFormatException e)
+                {
+                    Toast.makeText(SignUpActivity.this, "L'âge de l'enfant doit être un nombre", Toast.LENGTH_SHORT).show();
+                }
+        }
         });
     }
 }
