@@ -23,13 +23,20 @@
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <TextView
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:background="@drawable/input_signin_border"
             android:ems="10"
-            android:hint="Email"
+            android:text="Email"
             android:inputType="textEmailAddress"
             android:padding="6dp" />
 
@@ -42,15 +49,29 @@
             android:textColor="@color/colorPrimaryDark" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nom de l'enfant"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <TextView
             android:id="@+id/editTextChildName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:background="@drawable/input_signin_border"
             android:ems="10"
-            android:hint="Nom de l'enfant"
+            android:text="Nom de l'enfant"
             android:inputType="textEmailAddress"
             android:padding="6dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Age de l'enfant"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/editTextChildAge"
@@ -59,9 +80,16 @@
             android:layout_marginBottom="12dp"
             android:background="@drawable/input_signin_border"
             android:ems="10"
-            android:hint="Age de l'enfant"
+            android:text="Age de l'enfant"
             android:inputType="textEmailAddress"
             android:padding="6dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Numero du Jouet"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/editTextJouetID"
@@ -70,7 +98,7 @@
             android:layout_marginBottom="12dp"
             android:background="@drawable/input_signin_border"
             android:ems="10"
-            android:hint="Jouet ID"
+            android:text="Jouet ID"
             android:inputType="textEmailAddress"
             android:padding="6dp" />
 
@@ -85,7 +113,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="132dp"
+            android:layout_height="111dp"
             android:orientation="horizontal">
 
             <Button

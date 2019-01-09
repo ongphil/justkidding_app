@@ -2,13 +2,11 @@ package justkidding.justkidding;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +49,7 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseAuth Auth;
     private FirebaseFirestore Firestore;
+    private String User_id;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -99,6 +98,8 @@ public class ProfileFragment extends Fragment {
         Auth= FirebaseAuth.getInstance();
         Firestore = FirebaseFirestore.getInstance();
 
+        User_id = Auth.getCurrentUser().getUid();
+
         EmailTextView = view.findViewById(R.id.editTextEmail);
         NameTextView = view.findViewById(R.id.editTextChildName);
         AgeTextView = view.findViewById(R.id.editTextChildAge);
@@ -108,6 +109,7 @@ public class ProfileFragment extends Fragment {
         LogOut = view.findViewById(R.id.Button_Logout);
         Firestore.collection("Users")
                 .document("Kg2AkIU0fkMF73kR0BmDyh95s2G2")
+                //.document(User_id)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
