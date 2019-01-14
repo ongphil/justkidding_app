@@ -10,22 +10,36 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.Serializable;
+import java.util.Map;
+
 
 public class AppetencesFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    private Map<String, Object> allAppetences;
 
-    private Button test_button;
-    private TextView test_tv;
+    private OnFragmentInteractionListener mListener;
 
     public AppetencesFragment() {
         // Required empty public constructor
+    }
+
+    public static AppetencesFragment newInstance(Map<String, Object> appetences) {
+        AppetencesFragment fragment = new AppetencesFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("allAppetences", (Serializable) appetences);
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle b = this.getArguments();
+        if(b.getSerializable("allAppetences") != null)
+            allAppetences = (Map<String, Object>)b.getSerializable("allAppetences");
+        int i = 0;
     }
 
     @Override
@@ -34,7 +48,7 @@ public class AppetencesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_appetences, container, false);
 
-        test_button = view.findViewById(R.id.test_button);
+        /*test_button = view.findViewById(R.id.test_button);
         test_tv = view.findViewById(R.id.test_tv);
         test_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +56,7 @@ public class AppetencesFragment extends Fragment {
                 test_tv.setText("Test");
                 mListener.onFragmentInteractionAppetences();
             }
-        });
+        });*/
         return view;
     }
 

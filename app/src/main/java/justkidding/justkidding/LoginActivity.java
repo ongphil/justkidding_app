@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -51,31 +52,39 @@ public class LoginActivity extends Activity {
             }
         });
 
+
+
         ///LOGIN FOR SPECIFIC USER
-//        buttonConnection.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                email = EmailField.getText().toString();
-//                password = PasswordField.getText().toString();
-//
-//                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password))
-//                {
-//                    Auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                            if (task.isSuccessful()) {
-//                                Intent sendToMain = new Intent (LoginActivity.this, MainActivity.class);
-//                                startActivity(sendToMain);
-//                                finish();
-//
-//                            } else {
-//                                Toast.makeText(LoginActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                        });
-//                }
-//            }
-//        });
+        buttonConnection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                email = EmailField.getText().toString();
+                password = PasswordField.getText().toString();
+
+                Auth= FirebaseAuth.getInstance();
+                Firestore = FirebaseFirestore.getInstance();
+
+                if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password))
+                {
+                    Auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Intent sendToMain = new Intent (LoginActivity.this, MainActivity.class);
+                                startActivity(sendToMain);
+                                finish();
+
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        });
+                    /*Intent sendToMain = new Intent (LoginActivity.this, MainActivity.class);
+                    startActivity(sendToMain);
+                    finish();*/
+                }
+            }
+        });
 
     }
 

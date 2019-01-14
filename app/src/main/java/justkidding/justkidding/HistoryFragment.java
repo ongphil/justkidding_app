@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,14 +44,8 @@ import static android.content.ContentValues.TAG;
  * create an instance of this fragment.
  */
 public class HistoryFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Map<String, Map<String, Object>> allAppetences;
 
     private OnFragmentInteractionListener mListener;
 
@@ -61,20 +56,10 @@ public class HistoryFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HistoryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HistoryFragment newInstance(String param1, String param2) {
+    public static HistoryFragment newInstance(Map<String, Object> appetences) {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable("allAppetences", (Serializable) appetences);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,10 +67,10 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        Bundle b = this.getArguments();
+        if(b.getSerializable("allAppetences") != null)
+            allAppetences = (Map<String, Map<String, Object>>)b.getSerializable("allAppetences");
+        int i = 0;
     }
 
     @Override
@@ -113,34 +98,26 @@ public class HistoryFragment extends Fragment {
 
                             RelativeLayout relativeLayout_Icon = (RelativeLayout) activity_icon_view.findViewById(R.id.relativelayout_Icon);
                             ImageView imageView_Icon = (ImageView) activity_icon_view.findViewById(R.id.activity_icon);
+                            ImageView imageView_Icon_Theme = (ImageView) activity_icon_view.findViewById(R.id.theme_icon);
                             TextView textView_Date = (TextView) activity_icon_view.findViewById(R.id.tv_activity_date);
-                            TextView textView_Hour = (TextView) activity_icon_view.findViewById(R.id.tv_activity_hour);
 
                             String activity_date_str = String.valueOf(activity.get("Activity_Date"));
                             String formatted_date = "";
-                            String formatted_hour = "";
                             try {
                                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                                SimpleDateFormat formatter_date = new SimpleDateFormat("yyyy-MM-dd");
-                                SimpleDateFormat formatter_hour = new SimpleDateFormat("HH:mm");
+                                SimpleDateFormat formatter_date = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                                 Date date = formatter.parse(activity_date_str);
                                 formatted_date = formatter_date.format(date);
-                                formatted_hour = formatter_hour.format(date);
-                                textView_Date.setText(formatted_date);
-                                textView_Hour.setText(formatted_hour);
+                                textView_Date.setText(String.valueOf(formatted_date));
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
 
-                            if(String.valueOf(activity.get("Activity_Name")).equals("Histoire"))
-                            {
-                                imageView_Icon.setImageResource(R.drawable.red_circle_histoire);
-                            }
-                            else
-                            {
-                                imageView_Icon.setImageResource(R.drawable.red_circle_comptine);
-                            }
+                            String activity_image_url = String.valueOf(((Map)allAppetences.get(String.valueOf(activity.get("Activity_Name")))).get("Image"));
+                            new DownloadImageTask(imageView_Icon).execute(activity_image_url);
 
+                            String theme_image_url = String.valueOf(((Map)((Map)allAppetences.get(String.valueOf(activity.get("Activity_Name")))).get(String.valueOf(activity.get("Activity_Theme")))).get("Image"));
+                            new DownloadImageTask(imageView_Icon_Theme).execute(theme_image_url);
 
                             // Si ce n'est pas la première activité, on ajoute un trait de transition
                             if(!first_activity)
@@ -217,50 +194,4 @@ public class HistoryFragment extends Fragment {
         void onFragmentInteractionHistory(Uri uri);
     }
 
-    public void populate_history(View view) {
-
-        ViewGroup insertLayoutMain = (ViewGroup) view.findViewById(R.id.linearlayout_main);
-
-        /// 1ère vue (icone de l'activité + date + heure)
-        LayoutInflater layoutInflater_activity_icon = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View activity_icon_view = layoutInflater_activity_icon.inflate(R.layout.history_custom_layout, null);
-
-        RelativeLayout relativeLayout_Icon = (RelativeLayout) activity_icon_view.findViewById(R.id.relativelayout_Icon);
-        ImageView imageView_Icon = (ImageView) activity_icon_view.findViewById(R.id.activity_icon);
-        TextView textView_Date = (TextView) activity_icon_view.findViewById(R.id.tv_activity_date);
-        TextView textView_Hour = (TextView) activity_icon_view.findViewById(R.id.tv_activity_hour);
-
-        textView_Date.setText("08/01/2019");
-        textView_Hour.setText("12:26");
-        imageView_Icon.setImageResource(R.drawable.red_circle_histoire);
-
-        // Si ce n'est pas la première activité, on ajoute un trait de transition
-        if(!first_activity)
-        {
-            /// 2ème vue (trait de transition entre 2 activités)
-            LayoutInflater layoutInflater_link = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View link_view = layoutInflater_link.inflate(R.layout.history_custom_link, null);
-
-            ImageView imageView_link = (ImageView) link_view.findViewById(R.id.imageView_link);
-
-            if(icon_left)
-            {
-                imageView_link.setImageResource(R.drawable.line_left_to_right);
-            }
-            else {
-                relativeLayout_Icon.setGravity(Gravity.END);
-                imageView_link.setImageResource(R.drawable.line_right_to_left);
-            }
-            insertLayoutMain.addView(link_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
-        else
-        {
-            first_activity = false;
-        }
-
-        icon_left = !icon_left;
-
-        insertLayoutMain.addView(activity_icon_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-    }
 }
