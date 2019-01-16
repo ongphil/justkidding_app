@@ -22,14 +22,14 @@
                     android:orientation="horizontal">
 
                         <ImageButton
-                            android:id="@+id/imageButtonComptine"
+                            android:id="@+id/imageButtonChansons"
                             android:layout_width="180dp"
                             android:layout_height="180dp"
                             android:layout_weight="1"
-                            android:background="@drawable/icon_comptines" />
+                            android:background="@drawable/icon_chansons" />
 
                         <ImageButton
-                            android:id="@+id/imageButtonHistoire"
+                            android:id="@+id/imageButtonHistoires"
                             android:layout_width="180dp"
                             android:layout_height="180dp"
                             android:layout_weight="1"

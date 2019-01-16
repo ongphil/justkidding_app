@@ -70,7 +70,6 @@ public class HistoryFragment extends Fragment {
         Bundle b = this.getArguments();
         if(b.getSerializable("allAppetences") != null)
             allAppetences = (Map<String, Map<String, Object>>)b.getSerializable("allAppetences");
-        int i = 0;
     }
 
     @Override
