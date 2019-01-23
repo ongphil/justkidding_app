@@ -80,7 +80,7 @@ public class HistoryFragment extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Histories")
-                .document("KGOlFDOVOo2xpbhOCOf1")
+                .document("b8:27:eb:a4:76:ca")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override

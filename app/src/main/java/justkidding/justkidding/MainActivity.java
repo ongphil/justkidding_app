@@ -1,6 +1,6 @@
 package justkidding.justkidding;
 
-import android.app.ActionBar;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,14 +9,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -33,9 +35,8 @@ public class MainActivity extends AppCompatActivity
     private AdvicesFragment advicesFragment;
     private ProfileFragment profileFragment;
 
-    String email ;
-    String child_name;
-    int child_age;
+    FirebaseAuth Auth;
+    FirebaseFirestore db;
 
 
     @Override
@@ -49,9 +50,27 @@ public class MainActivity extends AppCompatActivity
 
         setTitle("Appétences");
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Auth = FirebaseAuth.getInstance();
+
+
+        db = FirebaseFirestore.getInstance();
+
+
+
+                String token_id = FirebaseInstanceId.getInstance().getToken();
+                String current_id = Auth.getCurrentUser().getUid();
+
+                // /!\ Récupérer l'ID du jouet dans les Users avec current_id
+
+                Map<String, Object> tokenMap = new HashMap<>();
+                tokenMap.put("Token_ID", token_id);
+                tokenMap.put("User_ID", current_id);
+
+                db.collection("Jouets").document("b8:27:eb:a4:76:ca").set(tokenMap);
+
+
         db.collection("Appetences")
-                .document("psww5ttXlMRct2kNzxrT")
+                .document("b8:27:eb:a4:76:ca")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override

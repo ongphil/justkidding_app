@@ -18,6 +18,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -38,7 +41,7 @@ public class ProfileFragment extends Fragment {
     private String Email;
     private String Child_Name;
     private String Jouet_ID;
-    private int Child_Age;
+    private String Child_Age;
     private TextView EmailTextView;
     private TextView NameTextView;
     private TextView AgeTextView;
@@ -116,39 +119,24 @@ public class ProfileFragment extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Email = documentSnapshot.getString("Email");
                         Child_Name = documentSnapshot.getString("Child_name");
-                        Child_Age = documentSnapshot.getLong("Child_age").intValue();
+                        Child_Age = String.valueOf(documentSnapshot.getString("Child_age"));
                         Jouet_ID = documentSnapshot.getString("Jouet_ID");
-                        Map<String, Boolean> activity = (Map<String, Boolean>) documentSnapshot.get("Activity");
+
+                        String Child_Age_Formatted = "";
+                        try {
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat formatter_date = new SimpleDateFormat("dd/MM/yyyy");
+                            Date date = formatter.parse(Child_Age);
+                            Child_Age_Formatted = formatter_date.format(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                         EmailTextView.setText(Email);
                         NameTextView.setText(Child_Name);
-                        AgeTextView.setText("" + Child_Age);
+                        AgeTextView.setText(Child_Age_Formatted);
                         JouetTextView.setText(Jouet_ID);
-                        for ( Map.Entry<String, Boolean> entry : activity.entrySet()) {
-                            String key = entry.getKey();
-                            Boolean value = entry.getValue();
-                            // do something with key and/or tab
-                            switch (key) {
-                                case "Comptine":
-                                    if (value)
-                                    {
-                                        Drawable roundDrawable = getResources().getDrawable(R.drawable.circle);
-                                        roundDrawable.setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
 
-                                            comptine.setBackground(roundDrawable);
-                                    }
-                                    break;
-                                case "Histoire":
-                                    if (value)
-                                    {
-                                        Drawable roundDrawable = getResources().getDrawable(R.drawable.circle);
-                                        roundDrawable.setColorFilter(getResources().getColor(R.color.colorPrimaryDark), PorterDuff.Mode.SRC_ATOP);
-
-                                            histoire.setBackground(roundDrawable);
-                                    }
-                                    break;
-                            }
-
-                        }
                     }
                 });
 

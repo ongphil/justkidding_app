@@ -146,14 +146,16 @@ public class AppetencesFragment extends Fragment {
                 View theme_progress_item = layoutInflater_theme_progress_item_.inflate(R.layout.theme_progress_item, null);
 
                 ImageView iv_theme_icon = (ImageView) theme_progress_item.findViewById(R.id.iv_theme_icon);
+                TextView tv_theme_title = (TextView) theme_progress_item.findViewById(R.id.tv_theme_title);
                 TextView tv_theme_percent = (TextView) theme_progress_item.findViewById(R.id.tv_theme_percent);
                 ProgressBar p_theme_progress = (ProgressBar) theme_progress_item.findViewById(R.id.p_theme_progress);
 
                 String theme_image_url = String.valueOf(((Map)((Map)allAppetences.get(activity)).get(key)).get("Image"));
                 new DownloadImageTask(iv_theme_icon).execute(theme_image_url);
 
-                tv_theme_percent.setText(String.valueOf(((Map)((Map)allAppetences.get(activity)).get(key)).get("Progression")) + "%");
-                p_theme_progress.setProgress(Integer.parseInt(String.valueOf(((Map)((Map)allAppetences.get(activity)).get(key)).get("Progression"))));
+                tv_theme_title.setText(key);
+                tv_theme_percent.setText(String.valueOf(Math.round((Double.parseDouble(String.valueOf(((Map)((Map)allAppetences.get(activity)).get(key)).get("Progression")))))) + "%");
+                p_theme_progress.setProgress(Integer.parseInt(String.valueOf(Math.round((Double.parseDouble(String.valueOf(((Map)((Map)allAppetences.get(activity)).get(key)).get("Progression"))))))));
 
                 theme_progress_item.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT,1f));
 

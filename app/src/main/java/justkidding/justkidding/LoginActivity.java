@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +45,7 @@ public class LoginActivity extends Activity {
         Inscription = (Button)findViewById(R.id.buttonSignup);
 
         Auth= FirebaseAuth.getInstance();
+        Firestore = FirebaseFirestore.getInstance();
 
         Inscription.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
@@ -61,15 +63,13 @@ public class LoginActivity extends Activity {
                 email = EmailField.getText().toString();
                 password = PasswordField.getText().toString();
 
-                Auth= FirebaseAuth.getInstance();
-                Firestore = FirebaseFirestore.getInstance();
-
                 if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password))
                 {
                     Auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                Log.e("TAG", "User ID : " + Auth.getCurrentUser().getUid());
                                 Intent sendToMain = new Intent (LoginActivity.this, MainActivity.class);
                                 startActivity(sendToMain);
                                 finish();
@@ -88,37 +88,5 @@ public class LoginActivity extends Activity {
 
     }
 
-    public void logIn(View view) {
-        class LogIn extends AsyncTask<Void, Void, String> {
 
-            @Override
-            protected String doInBackground(Void... voids) {
-                try {
-                    /// Connexion à la BDD pour trouver l'utilisateur
-                    String result = "success";
-
-                    return result;
-                } catch (Exception e) {
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                super.onPostExecute(result);
-                if(result == "success") {
-                    /// Configuration de la session avec l'utilisateur trouver
-                    /// Changement de page
-                    Intent intentConnection = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intentConnection);
-                    finish();
-                } else {
-                    Toast.makeText(LoginActivity.this,"Problème d'authentification",Toast.LENGTH_LONG).show();
-                }
-
-            }
-        }
-        LogIn logIn = new LogIn();
-        logIn.execute();
-    }
 }
