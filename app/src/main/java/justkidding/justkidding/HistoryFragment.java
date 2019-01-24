@@ -111,12 +111,18 @@ public class HistoryFragment extends Fragment {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+                            
+                            if(String.valueOf(activity.get("Activity_Name")).equals("Histoires")) {
+                                imageView_Icon.setImageResource(R.drawable.icon_histoires);
+                            } else {
+                                imageView_Icon.setImageResource(R.drawable.icon_chansons);
+                            }
 
-                            String activity_image_url = String.valueOf(((Map)allAppetences.get(String.valueOf(activity.get("Activity_Name")))).get("Image"));
-                            new DownloadImageTask(imageView_Icon).execute(activity_image_url);
-
-                            String theme_image_url = String.valueOf(((Map)((Map)allAppetences.get(String.valueOf(activity.get("Activity_Name")))).get(String.valueOf(activity.get("Activity_Theme")))).get("Image"));
-                            new DownloadImageTask(imageView_Icon_Theme).execute(theme_image_url);
+                            if(String.valueOf(activity.get("Activity_Theme")).equals("Chevaliers")) {
+                                imageView_Icon_Theme.setImageResource(R.drawable.icon_chevaliers);
+                            } else {
+                                imageView_Icon_Theme.setImageResource(R.drawable.icon_animaux);
+                            }
 
                             // Si ce n'est pas la première activité, on ajoute un trait de transition
                             if(!first_activity)

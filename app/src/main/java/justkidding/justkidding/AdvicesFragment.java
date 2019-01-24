@@ -22,7 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,7 +51,9 @@ public class AdvicesFragment extends Fragment {
     private String activite;
     private FirebaseAuth Auth;
     private FirebaseFirestore Firestore;
-    ArrayList<String> text = new ArrayList<>();
+
+    private ArrayList<NotificationClass> notificationsList = new ArrayList<>();
+    private NotificationAdapter mAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -94,7 +99,9 @@ public class AdvicesFragment extends Fragment {
 
         final ListView NotificationActivities = (ListView) view.findViewById(R.id.ListViewNotif);
 
-        Firestore.collection("NotificationPush")
+        Firestore.collection("Users")
+                .document("NtHwMZGIqtSj6HlQRVyxnvWu57l2")
+                .collection("Notifications")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot snapshots,
@@ -107,22 +114,16 @@ public class AdvicesFragment extends Fragment {
                         for (DocumentChange dc : snapshots.getDocumentChanges()) {
                             switch (dc.getType()) {
                                 case ADDED:
-                                    Log.d("TAG", "New Msg: " + dc.getDocument().getString("ActivityProposed"));
-                                    text.add(dc.getDocument().getString("ActivityProposed"));
+                                    notificationsList.add(new NotificationClass(dc.getDocument().getString("theme"), dc.getDocument().getString("date"), dc.getDocument().getString("texte")));
                                     break;
                                 case MODIFIED:
-                                    Log.d("TAG", "Modified Msg: " + dc.getDocument().getString("ActivityProposed"));
-                                    text.add(dc.getDocument().getString("ActivityProposed"));
+                                    notificationsList.add(new NotificationClass(dc.getDocument().getString("theme"), dc.getDocument().getString("date"), dc.getDocument().getString("texte")));
                                     break;
                             }
                         }
-                        ArrayAdapter<String> ListViewAdapter = new ArrayAdapter<String>(
-                                getActivity(),
-                                R.layout.layout_image_text,
-                                R.id.ItemNotification,
-                                text
-                        );
-                        NotificationActivities.setAdapter(ListViewAdapter);
+
+                        mAdapter = new NotificationAdapter(getActivity(), notificationsList);
+                        NotificationActivities.setAdapter(mAdapter);
 
                     }
                 });
@@ -171,4 +172,5 @@ public class AdvicesFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteractionAdvices(Uri uri);
     }
+
 }
