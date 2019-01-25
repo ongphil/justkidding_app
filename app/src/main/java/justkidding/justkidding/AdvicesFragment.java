@@ -100,7 +100,7 @@ public class AdvicesFragment extends Fragment {
         final ListView NotificationActivities = (ListView) view.findViewById(R.id.ListViewNotif);
 
         Firestore.collection("Users")
-                .document("NtHwMZGIqtSj6HlQRVyxnvWu57l2")
+                .document(Auth.getCurrentUser().getUid())
                 .collection("Notifications")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override

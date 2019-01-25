@@ -1,5 +1,6 @@
 package justkidding.justkidding;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.view.MenuItem;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity
     FirebaseAuth Auth;
     FirebaseFirestore db;
 
+    SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,65 +53,94 @@ public class MainActivity extends AppCompatActivity
         setTitle("Appétences");
 
         Auth = FirebaseAuth.getInstance();
-
-
         db = FirebaseFirestore.getInstance();
 
+        sharedPreferences = getBaseContext().getSharedPreferences("PREFS", MODE_PRIVATE);
 
-
-                String token_id = FirebaseInstanceId.getInstance().getToken();
-                String current_id = Auth.getCurrentUser().getUid();
-
-                // /!\ Récupérer l'ID du jouet dans les Users avec current_id
-
-                Map<String, Object> tokenMap = new HashMap<>();
-                tokenMap.put("Token_ID", token_id);
-                tokenMap.put("User_ID", current_id);
-
-                db.collection("Jouets").document("b8:27:eb:a4:76:ca").set(tokenMap);
-
-
-        db.collection("Appetences")
-                .document("b8:27:eb:a4:76:ca")
+        db.collection("Users")
+                .document(Auth.getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Map<String, Object> appetences = (Map<String, Object>) documentSnapshot.get("Themes");
-                        //String test = String.valueOf(((Map)((Map)appetences.get("Chansons")).get("Disney")).get("Image"));
-                        appetencesFragment = AppetencesFragment.newInstance(appetences);
-                        historyFragment = HistoryFragment.newInstance(appetences);
-                        advicesFragment = new AdvicesFragment();
-                        profileFragment = new ProfileFragment();
+                                          @Override
+                                          public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                        navigation = (BottomNavigationView)findViewById(R.id.navigation);
-                        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+                                              String token_id = FirebaseInstanceId.getInstance().getToken();
+                                              String current_id = Auth.getCurrentUser().getUid();
 
-                        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-                            @Override
-                            public Fragment getItem(int position) {
-                                switch (position) {
-                                    case 0:
-                                        return appetencesFragment;
-                                    case 1:
-                                        return historyFragment;
-                                    case 2:
-                                        return advicesFragment;
-                                    case 3:
-                                        return profileFragment;
-                                }
-                                return null;
-                            }
+                                              String jouet_ID = documentSnapshot.getString("Jouet_ID");
 
-                            @Override
-                            public int getCount() {
-                                return 4;
-                            }
-                        });
+                                              sharedPreferences
+                                                      .edit()
+                                                      .putString("CURRENT_USER_ID", current_id )
+                                                      .putString("TOKEN_ID", token_id)
+                                                      .putString("JOUET_ID", jouet_ID )
+                                                      .apply();
+
+                                              Map<String, Object> tokenMap = new HashMap<>();
+                                              tokenMap.put("Token_ID", token_id);
+                                              tokenMap.put("User_ID", current_id);
+
+                                              db.collection("Jouets").document(jouet_ID).set(tokenMap);
 
 
-                    }
-                });
+                                              db.collection("Appetences")
+                                                      .document(jouet_ID)
+                                                      .get()
+                                                      .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                          @Override
+                                                          public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                              Map<String, Object> appetences = (Map<String, Object>) documentSnapshot.get("Themes");
+                                                              appetencesFragment = AppetencesFragment.newInstance(appetences);
+                                                              historyFragment = HistoryFragment.newInstance(appetences);
+                                                              advicesFragment = new AdvicesFragment();
+                                                              profileFragment = new ProfileFragment();
+
+                                                              navigation = (BottomNavigationView)findViewById(R.id.navigation);
+                                                              navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+                                                              viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+                                                                  @Override
+                                                                  public Fragment getItem(int position) {
+                                                                      switch (position) {
+                                                                          case 0:
+                                                                              return appetencesFragment;
+                                                                          case 1:
+                                                                              return historyFragment;
+                                                                          case 2:
+                                                                              return advicesFragment;
+                                                                          case 3:
+                                                                              return profileFragment;
+                                                                      }
+                                                                      return null;
+                                                                  }
+
+                                                                  @Override
+                                                                  public int getCount() {
+                                                                      return 4;
+                                                                  }
+                                                              });
+
+                                                              Intent intent = getIntent();
+                                                              String test = intent.getStringExtra("hasNotif");
+                                                              int i = 0;
+/*
+                                                              if (intent.getStringExtra("hasNotif")!=null) {
+                                                                  if(intent.getStringExtra("hasNotif").equals("true")) {
+                                                                      navigation.getMenu().getItem(2).setChecked(true);
+                                                                      viewPager.setCurrentItem(2);
+                                                                      setTitle("Conseils");
+                                                                  }
+                                                              }*/
+
+
+
+
+                                                          }
+                                                      });
+                                          }
+                                      });
+
+
 
     }
 

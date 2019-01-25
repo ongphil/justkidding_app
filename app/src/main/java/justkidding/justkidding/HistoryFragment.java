@@ -2,6 +2,7 @@ package justkidding.justkidding;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -52,6 +54,8 @@ public class HistoryFragment extends Fragment {
     boolean first_activity = true;
     boolean icon_left = true;
 
+    SharedPreferences sharedPreferences;
+
     public HistoryFragment() {
         // Required empty public constructor
     }
@@ -70,6 +74,7 @@ public class HistoryFragment extends Fragment {
         Bundle b = this.getArguments();
         if(b.getSerializable("allAppetences") != null)
             allAppetences = (Map<String, Map<String, Object>>)b.getSerializable("allAppetences");
+        sharedPreferences = getActivity().getSharedPreferences("PREFS", MODE_PRIVATE);
     }
 
     @Override
@@ -80,7 +85,7 @@ public class HistoryFragment extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Histories")
-                .document("b8:27:eb:a4:76:ca")
+                .document(sharedPreferences.getString("PREFS", "b8:27:eb:a4:76:ca"))
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -111,7 +116,7 @@ public class HistoryFragment extends Fragment {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-                            
+
                             if(String.valueOf(activity.get("Activity_Name")).equals("Histoires")) {
                                 imageView_Icon.setImageResource(R.drawable.icon_histoires);
                             } else {
