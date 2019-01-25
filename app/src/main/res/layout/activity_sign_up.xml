@@ -9,128 +9,116 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:padding="20dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mon Compte"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimaryDark" />
-
-        <EditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/input_signin_border"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:padding="6dp" />
-
-        <EditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/input_signin_border"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="6dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mon Enfant"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimaryDark" />
-
-        <EditText
-            android:id="@+id/editTextChildName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/input_signin_border"
-            android:ems="10"
-            android:hint="Nom de l'enfant"
-            android:inputType="textEmailAddress"
-            android:padding="6dp" />
-
-        <EditText
-            android:id="@+id/editTextChildAge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/input_signin_border"
-            android:ems="10"
-            android:hint="Age de l'enfant"
-            android:inputType="textEmailAddress"
-            android:padding="6dp" />
-
-        <EditText
-            android:id="@+id/editTextJouetID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/input_signin_border"
-            android:ems="10"
-            android:hint="Jouet ID"
-            android:inputType="textEmailAddress"
-            android:padding="6dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Choix des Activités"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/colorPrimaryDark" />
-
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="132dp"
-            android:orientation="horizontal">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="13"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonHistoire"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/circle"
-                android:drawableTop="@drawable/histoire"
-                android:paddingTop="20dp"
-                android:text="Histoire"
-                android:textColor="#fff" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonComptine"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/circle"
-                android:drawableTop="@drawable/comptine"
-                android:paddingTop="20dp"
-                android:text="Comptine"
-                android:textColor="#fff" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:text="Mon Compte"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editTextEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/input_signin_border"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:padding="6dp"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/editTextPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/input_signin_border"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:padding="6dp"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:text="Mon Enfant"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editTextChildName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/input_signin_border"
+                    android:ems="10"
+                    android:hint="Nom de l'enfant"
+                    android:inputType="textEmailAddress"
+                    android:padding="6dp"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/editTextChildBirthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    android:background="@drawable/input_signin_border"
+                    android:ems="10"
+                    android:hint="Anniversaire de l'enfant"
+                    android:inputType="date"
+                    android:padding="6dp"
+                    android:textSize="20sp" />
+
+
+                <Button
+                    android:id="@+id/Button_SignUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:text="Je m'inscris"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/Button_SignUp"
-            android:layout_width="match_parent"
+        <Space
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="134dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="134dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/colorPrimary"
-            android:text="Sign Up"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold" />
+            android:layout_weight="1" />
+
 
     </LinearLayout>
+    ///
+
+
 
 </android.support.constraint.ConstraintLayout>

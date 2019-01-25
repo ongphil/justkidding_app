@@ -72,7 +72,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="Nom de l'enfant"
+                    android:text="Prénom"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />
 
@@ -91,7 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="Age de l'enfant"
+                    android:text="Anniversaire"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />
 
@@ -102,7 +102,7 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/input_signin_border"
                     android:ems="10"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textEmailAddress|date"
                     android:padding="6dp"
                     android:text="Age de l'enfant" />
 
@@ -110,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="Numero du Jouet"
+                    android:text="Numéro du Jouet"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />
 

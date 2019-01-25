@@ -107,8 +107,6 @@ public class ProfileFragment extends Fragment {
         NameTextView = view.findViewById(R.id.editTextChildName);
         AgeTextView = view.findViewById(R.id.editTextChildAge);
         JouetTextView = view.findViewById(R.id.editTextJouetID);
-        histoire = view.findViewById(R.id.buttonHistoire);
-        comptine = view.findViewById(R.id.buttonComptine);
         LogOut = view.findViewById(R.id.Button_Logout);
         Firestore.collection("Users")
                 .document(User_id)
@@ -118,23 +116,14 @@ public class ProfileFragment extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Email = documentSnapshot.getString("Email");
                         Child_Name = documentSnapshot.getString("Child_name");
-                        Child_Age = String.valueOf(documentSnapshot.get("Child_age"));
+                        Child_Age = documentSnapshot.getString("Child_age");
                         Jouet_ID = documentSnapshot.getString("Jouet_ID");
-
-                        String Child_Age_Formatted = "";
-                        try {
-                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                            SimpleDateFormat formatter_date = new SimpleDateFormat("dd/MM/yyyy");
-                            Date date = formatter.parse(Child_Age);
-                            Child_Age_Formatted = formatter_date.format(date);
-                            AgeTextView.setText(Child_Age_Formatted);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
 
                         EmailTextView.setText(Email);
                         NameTextView.setText(Child_Name);
+                        AgeTextView.setText(Child_Age);
                         JouetTextView.setText(Jouet_ID);
+
 
                     }
                 });
