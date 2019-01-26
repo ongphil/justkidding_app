@@ -17,7 +17,8 @@
             android:id="@+id/linearlayout_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical"
+            android:paddingTop="12dp"></LinearLayout>
     </ScrollView>
 
 </FrameLayout>

@@ -1,6 +1,5 @@
 package justkidding.justkidding;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -120,17 +119,7 @@ public class MainActivity extends AppCompatActivity
                                                                   }
                                                               });
 
-                                                              Intent intent = getIntent();
-                                                              String test = intent.getStringExtra("hasNotif");
-                                                              int i = 0;
-/*
-                                                              if (intent.getStringExtra("hasNotif")!=null) {
-                                                                  if(intent.getStringExtra("hasNotif").equals("true")) {
-                                                                      navigation.getMenu().getItem(2).setChecked(true);
-                                                                      viewPager.setCurrentItem(2);
-                                                                      setTitle("Conseils");
-                                                                  }
-                                                              }*/
+
 
 
 

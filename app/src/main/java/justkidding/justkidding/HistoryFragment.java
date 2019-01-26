@@ -1,13 +1,10 @@
 package justkidding.justkidding;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,24 +13,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -93,71 +84,85 @@ public class HistoryFragment extends Fragment {
                         String user_id = documentSnapshot.getString("User_ID");
                         List<Map<String, Object>> activities = (List<Map<String, Object>>) documentSnapshot.get("Activities");
 
-                        for(Map<String, Object> activity : activities)
+                        if(activities.size() == 0)
                         {
                             ViewGroup insertLayout_main = (ViewGroup) view.findViewById(R.id.linearlayout_main);
-                            /// 1ère vue (icone de l'activité + date + heure)
-                            LayoutInflater layoutInflater_activity_icon = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                            View activity_icon_view = layoutInflater_activity_icon.inflate(R.layout.history_custom_layout, null);
+                            TextView valueTV = new TextView(getActivity());
+                            valueTV.setText("Aucune activité n'a encore été réalisée ! ");
+                            valueTV.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+                            valueTV.setPadding(0,40,0,0);
 
-                            RelativeLayout relativeLayout_Icon = (RelativeLayout) activity_icon_view.findViewById(R.id.relativelayout_Icon);
-                            ImageView imageView_Icon = (ImageView) activity_icon_view.findViewById(R.id.activity_icon);
-                            ImageView imageView_Icon_Theme = (ImageView) activity_icon_view.findViewById(R.id.theme_icon);
-                            TextView textView_Date = (TextView) activity_icon_view.findViewById(R.id.tv_activity_date);
+                            insertLayout_main.addView(valueTV);
 
-                            String activity_date_str = String.valueOf(activity.get("Activity_Date"));
-                            String formatted_date = "";
-                            try {
-                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                                SimpleDateFormat formatter_date = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-                                Date date = formatter.parse(activity_date_str);
-                                formatted_date = formatter_date.format(date);
-                                textView_Date.setText(String.valueOf(formatted_date));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
-                            if(String.valueOf(activity.get("Activity_Name")).equals("Histoires")) {
-                                imageView_Icon.setImageResource(R.drawable.icon_histoires);
-                            } else {
-                                imageView_Icon.setImageResource(R.drawable.icon_chansons);
-                            }
-
-                            if(String.valueOf(activity.get("Activity_Theme")).equals("Chevaliers")) {
-                                imageView_Icon_Theme.setImageResource(R.drawable.icon_chevaliers);
-                            } else {
-                                imageView_Icon_Theme.setImageResource(R.drawable.icon_animaux);
-                            }
-
-                            // Si ce n'est pas la première activité, on ajoute un trait de transition
-                            if(!first_activity)
+                        } else {
+                            for(Map<String, Object> activity : activities)
                             {
-                                /// 2ème vue (trait de transition entre 2 activités)
-                                LayoutInflater layoutInflater_link = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                                View link_view = layoutInflater_link.inflate(R.layout.history_custom_link, null);
+                                ViewGroup insertLayout_main = (ViewGroup) view.findViewById(R.id.linearlayout_main);
+                                /// 1ère vue (icone de l'activité + date + heure)
+                                LayoutInflater layoutInflater_activity_icon = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                View activity_icon_view = layoutInflater_activity_icon.inflate(R.layout.history_custom_layout, null);
 
-                                ImageView imageView_link = (ImageView) link_view.findViewById(R.id.imageView_link);
+                                RelativeLayout relativeLayout_Icon = (RelativeLayout) activity_icon_view.findViewById(R.id.relativelayout_Icon);
+                                ImageView imageView_Icon = (ImageView) activity_icon_view.findViewById(R.id.activity_icon);
+                                ImageView imageView_Icon_Theme = (ImageView) activity_icon_view.findViewById(R.id.theme_icon);
+                                TextView textView_Date = (TextView) activity_icon_view.findViewById(R.id.tv_activity_date);
 
-                                if(icon_left)
+                                String activity_date_str = String.valueOf(activity.get("Activity_Date"));
+                                String formatted_date = "";
+                                try {
+                                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                                    SimpleDateFormat formatter_date = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                                    Date date = formatter.parse(activity_date_str);
+                                    formatted_date = formatter_date.format(date);
+                                    textView_Date.setText(String.valueOf(formatted_date));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if(String.valueOf(activity.get("Activity_Name")).equals("Histoires")) {
+                                    imageView_Icon.setImageResource(R.drawable.icon_histoires);
+                                } else {
+                                    imageView_Icon.setImageResource(R.drawable.icon_chansons);
+                                }
+
+                                if(String.valueOf(activity.get("Activity_Theme")).equals("Chevaliers")) {
+                                    imageView_Icon_Theme.setImageResource(R.drawable.icon_chevaliers);
+                                } else {
+                                    imageView_Icon_Theme.setImageResource(R.drawable.icon_animaux);
+                                }
+
+                                // Si ce n'est pas la première activité, on ajoute un trait de transition
+                                if(!first_activity)
                                 {
-                                    imageView_link.setImageResource(R.drawable.line_left_to_right);
+                                    /// 2ème vue (trait de transition entre 2 activités)
+                                    LayoutInflater layoutInflater_link = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                    View link_view = layoutInflater_link.inflate(R.layout.history_custom_link, null);
+
+                                    ImageView imageView_link = (ImageView) link_view.findViewById(R.id.imageView_link);
+
+                                    if(icon_left)
+                                    {
+                                        imageView_link.setImageResource(R.drawable.line_left_to_right);
+                                    }
+                                    else {
+                                        relativeLayout_Icon.setGravity(Gravity.END);
+                                        imageView_link.setImageResource(R.drawable.line_right_to_left);
+                                    }
+                                    insertLayout_main.addView(link_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                 }
-                                else {
-                                    relativeLayout_Icon.setGravity(Gravity.END);
-                                    imageView_link.setImageResource(R.drawable.line_right_to_left);
+                                else
+                                {
+                                    first_activity = false;
                                 }
-                                insertLayout_main.addView(link_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                                icon_left = !icon_left;
+
+                                insertLayout_main.addView(activity_icon_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
                             }
-                            else
-                            {
-                                first_activity = false;
-                            }
-
-                            icon_left = !icon_left;
-
-                            insertLayout_main.addView(activity_icon_view, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
                         }
+
+
                     }
                 });
 

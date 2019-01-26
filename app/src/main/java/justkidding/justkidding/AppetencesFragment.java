@@ -2,8 +2,6 @@ package justkidding.justkidding;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -19,8 +17,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 

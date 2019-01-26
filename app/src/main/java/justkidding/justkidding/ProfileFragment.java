@@ -2,8 +2,6 @@ package justkidding.justkidding;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,10 +16,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
 
 
 /**
@@ -46,8 +40,6 @@ public class ProfileFragment extends Fragment {
     private TextView NameTextView;
     private TextView AgeTextView;
     private TextView JouetTextView;
-    private Button comptine;
-    private Button histoire;
     private Button LogOut;
 
     private FirebaseAuth Auth;
