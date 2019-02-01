@@ -31,7 +31,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="5dp"
                     android:text="Mon Compte"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
@@ -88,7 +88,7 @@
                     android:id="@+id/editTextChildBirthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/input_signin_border"
                     android:ems="10"
                     android:hint="Anniversaire de l'enfant"
@@ -96,6 +96,22 @@
                     android:padding="6dp"
                     android:textSize="20sp" />
 
+
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="En cochant cette case, j'accepte que mes données personnelles soient exploitées afin de proposer des activités personnalisées."
+                    android:textSize="12sp" />
+
+                <CheckBox
+                    android:id="@+id/checkBox2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:text="J'accepte de recevoir des newsletters par e-mail."
+                    android:textSize="12sp" />
 
                 <Button
                     android:id="@+id/Button_SignUp"

@@ -11,7 +11,8 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="15dp">
 
         <ImageView
             android:id="@+id/iv_activity"
@@ -44,7 +45,9 @@
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:text="X" />
+            android:background="@drawable/circle"
+            android:text="X"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </RelativeLayout>

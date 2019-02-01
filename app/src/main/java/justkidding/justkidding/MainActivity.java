@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity
         Auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        //Auth.signOut();
+
         sharedPreferences = getBaseContext().getSharedPreferences("PREFS", MODE_PRIVATE);
 
         db.collection("Users")

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/balloon_wallpaper_opacity"
     android:orientation="vertical"
     tools:context=".AppetencesFragment">
 
@@ -43,7 +44,9 @@
                                     android:layout_weight="1"
                                     android:gravity="center_horizontal"
                                     android:text="Chansons"
-                                    android:textSize="22sp" />
+                                    android:textColor="#c7596d"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -68,7 +71,9 @@
                                     android:layout_weight="1"
                                     android:gravity="center_horizontal"
                                     android:text="Histoires"
-                                    android:textSize="22sp" />
+                                    android:textColor="#ad89b6"
+                                    android:textSize="22sp"
+                                    android:textStyle="bold" />
                         </LinearLayout>
 
                 </LinearLayout>
@@ -94,7 +99,9 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:text="Culture"
-                            android:textSize="22sp" />
+                            android:textColor="#4c87bd"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
 
                 </LinearLayout>
         </LinearLayout>
