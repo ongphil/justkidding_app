@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 case R.id.navigation_advices:
                     viewPager.setCurrentItem(2);
-                    setTitle("Conseils");
+                    setTitle("Idées d'activités");
                     return true;
                 case R.id.navigation_profile:
                     viewPager.setCurrentItem(3);
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity
                 setTitle("Parcours");
                 break;
             case 2:
-                setTitle("Conseils");
+                setTitle("Idées d'activités");
                 break;
             case 3:
                 setTitle("Profil");
